@@ -38,3 +38,11 @@ console.log("Status do livro:", livro.statusDisponibilidade);
 
 livro.devolver();
 console.log("Status após devolução:", livro.statusDisponibilidade);
+
+console.log("\n--- RESERVA ---");
+
+livro.reservar();
+console.log("Status da reserva:", livro.statusReserva);
+
+livro.cancelarReserva();
+console.log("Status após cancelamento:", livro.statusReserva);
