@@ -1,6 +1,7 @@
 
 import { Livro } from "./domain/Livro";
 import { JogoEletronico } from "./domain/JogoEletronico";
+import { RepositorioMemoria } from "./repositories/RepositorioMemoria";
 
 const livro = new Livro(
   "Dom Casmurro",
@@ -46,3 +47,19 @@ console.log("Status da reserva:", livro.statusReserva);
 
 livro.cancelarReserva();
 console.log("Status após cancelamento:", livro.statusReserva);
+
+
+console.log("\n--- REPOSITÓRIO GENÉRICO ---");
+
+const repositorio = new RepositorioMemoria<typeof livro | typeof jogo>();
+
+repositorio.adicionar(livro);
+repositorio.adicionar(jogo);
+
+console.log("Quantidade de itens:", repositorio.listar().length);
+
+const itemEncontrado = repositorio.buscarPorId(livro.identificador);
+console.log("Item encontrado:", itemEncontrado?.nome);
+
+console.log("Remoção realizada:", repositorio.remover(jogo.identificador));
+console.log("Quantidade após remoção:", repositorio.listar().length);
