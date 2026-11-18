@@ -2,6 +2,8 @@
 import { Livro } from "./domain/Livro";
 import { JogoEletronico } from "./domain/JogoEletronico";
 import { RepositorioMemoria } from "./repositories/RepositorioMemoria";
+import { AtualizarItemDTO, ResumoItemDTO, ItemSomenteLeituraDTO } from "./dtos/CriarItemDTO";
+import { ItemJaEmprestadoError } from "./errors/ErrosAcervo";
 
 const livro = new Livro(
   "Dom Casmurro",
@@ -63,3 +65,39 @@ console.log("Item encontrado:", itemEncontrado?.nome);
 
 console.log("Remoção realizada:", repositorio.remover(jogo.identificador));
 console.log("Quantidade após remoção:", repositorio.listar().length);
+
+console.log("\n--- UTILITY TYPES ---");
+
+const atualizacao: AtualizarItemDTO = {
+  titulo: "Dom Casmurro - Edição especial"
+};
+
+const resumo: ResumoItemDTO = {
+  titulo: "Dom Casmurro"
+};
+
+const itemLeitura: ItemSomenteLeituraDTO = {
+  titulo: "Dom Casmurro",
+  anoPublicacao: 1899
+};
+
+console.log("Atualização:", atualizacao);
+console.log("Resumo:", resumo);
+console.log("Somente leitura:", itemLeitura);
+
+console.log("\n--- TRATAMENTO DE EXCEÇÕES ---");
+
+livro.emprestar();
+
+try {
+  livro.emprestar();
+} catch (erro) {
+  if (erro instanceof ItemJaEmprestadoError) {
+    console.log("Erro identificado:", erro.message);
+  } else {
+    console.log("Erro inesperado:", erro);
+  }
+} finally {
+  livro.devolver();
+  console.log("Estado do livro restaurado.");
+}
