@@ -40,3 +40,10 @@ export class ItemJaCadastradoError extends Error {
     this.name = "ItemJaCadastradoError";
   }
 }
+
+export class ItemNaoEncontradoError extends Error {
+  constructor(id: number) {
+    super(`Não foi encontrado um item com o identificador ${id}.`);
+    this.name = "ItemNaoEncontradoError";
+  }
+}

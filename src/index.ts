@@ -4,6 +4,9 @@ import { JogoEletronico } from "./domain/JogoEletronico";
 import { RepositorioMemoria } from "./repositories/RepositorioMemoria";
 import { AtualizarItemDTO, ResumoItemDTO, ItemSomenteLeituraDTO } from "./dtos/CriarItemDTO";
 import { ItemJaEmprestadoError } from "./errors/ErrosAcervo";
+import { ItemAcervo } from "./domain/ItemAcervo";
+import { AcervoService } from "./services/AcervoService";
+import { ItemNaoEncontradoError } from "./errors/ErrosAcervo";
 
 const livro = new Livro(
   "Dom Casmurro",
@@ -100,4 +103,46 @@ try {
 } finally {
   livro.devolver();
   console.log("Estado do livro restaurado.");
+}
+
+console.log("\n--- SERVIÇO DO ACERVO ---");
+
+const repositorioServico = new RepositorioMemoria<ItemAcervo>();
+const acervoService = new AcervoService(repositorioServico);
+
+// Cadastro
+acervoService.cadastrar(livro);
+acervoService.cadastrar(jogo);
+
+console.log("Itens cadastrados:", acervoService.listar().length);
+
+// Consulta
+const item = acervoService.buscar(livro.identificador);
+console.log("Item consultado:", item.nome);
+
+// Empréstimo
+acervoService.emprestar(livro.identificador);
+console.log("Status após empréstimo:", item.statusDisponibilidade);
+
+// Cálculo de multa
+console.log(
+  "Multa por 3 dias:",
+  acervoService.calcularMulta(livro.identificador, 3)
+);
+
+// Devolução
+acervoService.devolver(livro.identificador);
+console.log("Status após devolução:", item.statusDisponibilidade);
+
+// Remoção
+acervoService.remover(jogo.identificador);
+console.log("Itens após remoção:", acervoService.listar().length);
+
+// Tratamento de item inexistente
+try {
+  acervoService.buscar(999);
+} catch (erro) {
+  if (erro instanceof ItemNaoEncontradoError) {
+    console.log("Erro identificado:", erro.message);
+  }
 }

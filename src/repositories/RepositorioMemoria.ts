@@ -1,7 +1,9 @@
 
 import { ItemJaCadastradoError } from "../errors/ErrosAcervo";
+import { IRepositorio } from "./IRepositorio";
 
-export class RepositorioMemoria<T extends { identificador: number }> {
+export class RepositorioMemoria<T extends { identificador: number }>
+    implements IRepositorio<T> {
     private itens: T[] = [];
 
     adicionar(item: T): void {
