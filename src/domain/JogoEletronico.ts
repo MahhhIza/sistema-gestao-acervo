@@ -1,5 +1,6 @@
 
 import { ItemAcervo } from "./ItemAcervo";
+import { CampoObrigatorioError } from "../errors/ErrosAcervo";
 
 export class JogoEletronico extends ItemAcervo {
   constructor(
@@ -7,7 +8,13 @@ export class JogoEletronico extends ItemAcervo {
     anoPublicacao: number,
     private plataforma: string
   ) {
+    if (!plataforma.trim()) {
+      throw new CampoObrigatorioError("plataforma");
+    }
+
     super(titulo, anoPublicacao);
+
+    this.plataforma = plataforma.trim();
   }
 
   get nomePlataforma(): string {

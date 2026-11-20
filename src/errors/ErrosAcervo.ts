@@ -61,3 +61,17 @@ export class ItemReservadoError extends Error {
     this.name = "ItemReservadoError";
   }
 }
+
+export class CampoObrigatorioError extends Error {
+  constructor(campo: string) {
+    super(`O campo ${campo} é obrigatório.`);
+    this.name = "CampoObrigatorioError";
+  }
+}
+
+export class AnoPublicacaoInvalidoError extends Error {
+  constructor() {
+    super("O ano de publicação deve ser um número inteiro positivo e não pode ser futuro.");
+    this.name = "AnoPublicacaoInvalidoError";
+  }
+}

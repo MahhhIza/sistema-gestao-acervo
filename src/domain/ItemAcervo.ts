@@ -1,5 +1,5 @@
 
-import { ItemJaEmprestadoError, ItemNaoEmprestadoError } from "../errors/ErrosAcervo";
+import { ItemJaEmprestadoError, ItemNaoEmprestadoError, CampoObrigatorioError, AnoPublicacaoInvalidoError } from "../errors/ErrosAcervo";
 
 export abstract class ItemAcervo {
     private static _contadorId: number = 0;
@@ -11,6 +11,22 @@ export abstract class ItemAcervo {
         private titulo: string,
         private anoPublicacao: number
     ) {
+        if (!titulo.trim()) {
+            throw new CampoObrigatorioError("título");
+        }
+
+        const anoAtual = new Date().getFullYear();
+
+        if (
+            !Number.isInteger(anoPublicacao) ||
+            anoPublicacao <= 0 ||
+            anoPublicacao > anoAtual
+        ) {
+            throw new AnoPublicacaoInvalidoError();
+        }
+
+        this.titulo = titulo.trim();
+
         ItemAcervo._contadorId++;
         this.id = ItemAcervo._contadorId;
     }
