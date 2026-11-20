@@ -1,7 +1,7 @@
 
 import { ItemAcervo } from "./ItemAcervo";
 import { Reservavel } from "../interfaces/Reservavel";
-import { ItemJaReservadoError, ItemNaoReservadoError, ItemIndisponivelError, ItemReservadoError, CampoObrigatorioError } from "../errors/ErrosAcervo";
+import { ItemJaReservadoError, ItemNaoReservadoError, ItemIndisponivelError, ItemReservadoError, CampoObrigatorioError, DiasAtrasoInvalidoError} from "../errors/ErrosAcervo";
 
 export class Livro extends ItemAcervo implements Reservavel {
     private reservado: boolean = false;
@@ -55,8 +55,8 @@ export class Livro extends ItemAcervo implements Reservavel {
     }
 
     override calcularMulta(diasAtraso: number): number {
-        if (diasAtraso <= 0) {
-            return 0;
+        if (!Number.isInteger(diasAtraso) || diasAtraso < 0) {
+            throw new DiasAtrasoInvalidoError();
         }
 
         return diasAtraso * 2;

@@ -1,5 +1,5 @@
 
-import { ItemJaEmprestadoError, ItemNaoEmprestadoError, CampoObrigatorioError, AnoPublicacaoInvalidoError } from "../errors/ErrosAcervo";
+import { ItemJaEmprestadoError, ItemNaoEmprestadoError, CampoObrigatorioError, AnoPublicacaoInvalidoError, DiasAtrasoInvalidoError } from "../errors/ErrosAcervo";
 
 export abstract class ItemAcervo {
     private static _contadorId: number = 0;
@@ -70,4 +70,10 @@ export abstract class ItemAcervo {
     }
 
     abstract calcularMulta(diasAtraso: number): number;
+
+    protected validarDiasAtraso(diasAtraso: number): void {
+        if (!Number.isInteger(diasAtraso) || diasAtraso < 0) {
+            throw new DiasAtrasoInvalidoError();
+        }
+    }
 }

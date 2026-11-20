@@ -75,3 +75,10 @@ export class AnoPublicacaoInvalidoError extends Error {
     this.name = "AnoPublicacaoInvalidoError";
   }
 }
+
+export class DiasAtrasoInvalidoError extends Error {
+  constructor() {
+    super("Os dias de atraso devem ser um número inteiro igual ou maior que zero.");
+    this.name = "DiasAtrasoInvalidoError";
+  }
+}

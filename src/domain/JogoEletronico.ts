@@ -1,6 +1,6 @@
 
 import { ItemAcervo } from "./ItemAcervo";
-import { CampoObrigatorioError } from "../errors/ErrosAcervo";
+import { CampoObrigatorioError, DiasAtrasoInvalidoError } from "../errors/ErrosAcervo";
 
 export class JogoEletronico extends ItemAcervo {
   constructor(
