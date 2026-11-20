@@ -22,9 +22,7 @@ export class JogoEletronico extends ItemAcervo {
   }
 
   override calcularMulta(diasAtraso: number): number {
-    if (diasAtraso <= 0) {
-      return 0;
-    }
+    this.validarDiasAtraso(diasAtraso);
 
     return diasAtraso * 5;
   }
