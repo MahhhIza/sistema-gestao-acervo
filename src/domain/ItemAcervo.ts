@@ -31,10 +31,16 @@ export abstract class ItemAcervo {
         return this.emprestado ? "Emprestado" : "Disponível";
     }
 
+    protected validarEmprestimo(): void {
+        // Regra padrão: nenhum impedimento adicional.
+    }
+
     emprestar(): void {
         if (this.emprestado) {
             throw new ItemJaEmprestadoError();
         }
+
+        this.validarEmprestimo();
 
         this.emprestado = true;
     }

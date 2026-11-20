@@ -1,7 +1,7 @@
 
 import { ItemAcervo } from "./ItemAcervo";
 import { Reservavel } from "../interfaces/Reservavel";
-import { ItemJaReservadoError, ItemNaoReservadoError, ItemIndisponivelError } from "../errors/ErrosAcervo";
+import { ItemJaReservadoError, ItemNaoReservadoError, ItemIndisponivelError, ItemReservadoError } from "../errors/ErrosAcervo";
 
 export class Livro extends ItemAcervo implements Reservavel {
     private reservado: boolean = false;
@@ -20,6 +20,12 @@ export class Livro extends ItemAcervo implements Reservavel {
 
     get statusReserva(): string {
         return this.reservado ? "Reservado" : "Sem reserva";
+    }
+
+    protected override validarEmprestimo(): void {
+        if (this.reservado) {
+            throw new ItemReservadoError();
+        }
     }
 
     reservar(): void {

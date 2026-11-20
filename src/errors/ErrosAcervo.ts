@@ -54,3 +54,10 @@ export class ItemNaoReservavelError extends Error {
     this.name = "ItemNaoReservavelError";
   }
 }
+
+export class ItemReservadoError extends Error {
+  constructor() {
+    super("Este livro possui uma reserva ativa e não pode ser emprestado.");
+    this.name = "ItemReservadoError";
+  }
+}
