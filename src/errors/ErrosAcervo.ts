@@ -47,3 +47,10 @@ export class ItemNaoEncontradoError extends Error {
     this.name = "ItemNaoEncontradoError";
   }
 }
+
+export class ItemNaoReservavelError extends Error {
+  constructor() {
+    super("Este tipo de item não permite reservas.");
+    this.name = "ItemNaoReservavelError";
+  }
+}

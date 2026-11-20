@@ -14,7 +14,7 @@ export class MenuAcervo {
 
   constructor(
     private readonly acervoService: AcervoService
-  ) {}
+  ) { }
 
   async iniciar(): Promise<void> {
     let opcao = "";
@@ -33,6 +33,8 @@ export class MenuAcervo {
       console.log("6 ｡˚ Devolver item");
       console.log("7 ｡˚ Calcular multa");
       console.log("8 ｡˚ Remover item");
+      console.log("9 ｡˚ Reservar livro");
+      console.log("10 ｡˚ Cancelar reserva");
       console.log("0 ｡˚ Sair");
 
       opcao = (await this.perguntar("\n⋆.˚Escolha uma opção: ")).trim();
@@ -69,6 +71,14 @@ export class MenuAcervo {
 
           case "8":
             await this.removerItem();
+            break;
+
+          case "9":
+            await this.reservarLivro();
+            break;
+
+          case "10":
+            await this.cancelarReserva();
             break;
 
           case "0":
@@ -151,10 +161,10 @@ export class MenuAcervo {
       console.log("Título:", item.nome);
       console.log("Ano:", item.ano);
       console.log("Status:", item.statusDisponibilidade);
-      console.log(
-        "Tipo:",
-        item instanceof Livro ? "Livro" : "Jogo eletrônico"
-      );
+      console.log("Tipo:", item instanceof Livro ? "Livro" : "Jogo eletrônico");
+      if (item instanceof Livro) {
+        console.log("Reserva:", item.statusReserva);
+      }
     }
   }
 
@@ -212,5 +222,25 @@ export class MenuAcervo {
     this.acervoService.remover(id);
 
     console.log("⋆.˚Item removido com sucesso!˚.⋆");
+  }
+
+  private async reservarLivro(): Promise<void> {
+    console.log("\n★☆--- RESERVAR LIVRO ---☆★");
+
+    const id = await this.perguntarNumero("⋆.˚Digite o ID do livro: ");
+
+    this.acervoService.reservar(id);
+
+    console.log("\n⋆.˚Reserva realizada com sucesso!˚.⋆");
+  }
+
+  private async cancelarReserva(): Promise<void> {
+    console.log("\n★☆--- CANCELAR RESERVA ---☆★");
+
+    const id = await this.perguntarNumero("⋆.˚Digite o ID do livro: ");
+
+    this.acervoService.cancelarReserva(id);
+
+    console.log("\n⋆.˚Reserva cancelada com sucesso!˚.⋆");
   }
 }
