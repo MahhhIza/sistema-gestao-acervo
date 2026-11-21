@@ -6,7 +6,11 @@ import { IRepositorio } from "../repositories/IRepositorio";
 import { Reservavel } from "../interfaces/Reservavel";
 import {
   CriarLivroDTO,
-  CriarJogoEletronicoDTO
+  CriarJogoEletronicoDTO,
+  AtualizarItemDTO,
+  ResumoItemDTO,
+  ItemSemAnoDTO,
+  ItemSomenteLeituraDTO
 } from "../dtos/CriarItemDTO";
 import {
   ItemNaoEncontradoError,
@@ -28,7 +32,7 @@ function ehReservavel(
 export class AcervoService {
   constructor(
     private readonly repositorio: IRepositorio<ItemAcervo>
-  ) {}
+  ) { }
 
   cadastrarLivro(dados: CriarLivroDTO): Livro {
     const livro = new Livro(
@@ -68,6 +72,28 @@ export class AcervoService {
     return item;
   }
 
+  atualizar(id: number, dados: AtualizarItemDTO): void {
+    const item = this.buscar(id);
+    item.atualizar(dados);
+  }
+
+  obterResumo(id: number): ResumoItemDTO {
+    const item = this.buscar(id);
+
+    return {
+      titulo: item.nome
+    };
+  }
+
+  obterDadosSomenteLeitura(id: number): ItemSomenteLeituraDTO {
+    const item = this.buscar(id);
+
+    return Object.freeze({
+      titulo: item.nome,
+      anoPublicacao: item.ano
+    });
+  }
+
   remover(id: number): void {
     this.buscar(id);
     this.repositorio.remover(id);
@@ -103,5 +129,13 @@ export class AcervoService {
     }
 
     item.cancelarReserva();
+  }
+
+  obterDadosSemAno(id: number): ItemSemAnoDTO {
+    const item = this.buscar(id);
+
+    return {
+      titulo: item.nome
+    };
   }
 }

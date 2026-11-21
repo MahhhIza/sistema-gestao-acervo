@@ -1,5 +1,6 @@
 
 import { ItemJaEmprestadoError, ItemNaoEmprestadoError, CampoObrigatorioError, AnoPublicacaoInvalidoError, DiasAtrasoInvalidoError } from "../errors/ErrosAcervo";
+import type { AtualizarItemDTO } from "../dtos/CriarItemDTO";
 
 export abstract class ItemAcervo {
     private static _contadorId: number = 0;
@@ -47,6 +48,29 @@ export abstract class ItemAcervo {
         return this.emprestado ? "Emprestado" : "Disponível";
     }
 
+    atualizar(dados: AtualizarItemDTO): void {
+        if (dados.titulo !== undefined) {
+            if (!dados.titulo.trim()) {
+                throw new CampoObrigatorioError("título");
+            }
+
+            this.titulo = dados.titulo.trim();
+        }
+
+        if (dados.anoPublicacao !== undefined) {
+            const anoAtual = new Date().getFullYear();
+
+            if (
+                !Number.isInteger(dados.anoPublicacao) ||
+                dados.anoPublicacao <= 0 ||
+                dados.anoPublicacao > anoAtual
+            ) {
+                throw new AnoPublicacaoInvalidoError();
+            }
+
+            this.anoPublicacao = dados.anoPublicacao;
+        }
+    }
     protected validarEmprestimo(): void {
         // Regra padrão: nenhum impedimento adicional.
     }
