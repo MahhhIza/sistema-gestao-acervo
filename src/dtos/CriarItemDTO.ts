@@ -6,6 +6,14 @@ export interface ItemDTO {
 
 export type CriarItemDTO = ItemDTO;
 
+export interface CriarLivroDTO extends CriarItemDTO {
+  autor: string;
+}
+
+export interface CriarJogoEletronicoDTO extends CriarItemDTO {
+  plataforma: string;
+}
+
 export type AtualizarItemDTO = Partial<ItemDTO>;
 
 export type ResumoItemDTO = Pick<ItemDTO, "titulo">;

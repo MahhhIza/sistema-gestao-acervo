@@ -3,7 +3,6 @@ import { createInterface } from "node:readline/promises";
 import { stdin, stdout } from "node:process";
 
 import { Livro } from "../domain/Livro";
-import { JogoEletronico } from "../domain/JogoEletronico";
 import { AcervoService } from "../services/AcervoService";
 
 export class MenuAcervo {
@@ -14,7 +13,7 @@ export class MenuAcervo {
 
   constructor(
     private readonly acervoService: AcervoService
-  ) { }
+  ) {}
 
   async iniciar(): Promise<void> {
     let opcao = "";
@@ -122,9 +121,11 @@ export class MenuAcervo {
     const autor = await this.perguntar("⋆.˚Autor: ");
     const ano = await this.perguntarNumero("⋆.˚Ano de publicação: ");
 
-    const livro = new Livro(titulo, ano, autor);
-
-    this.acervoService.cadastrar(livro);
+    const livro = this.acervoService.cadastrarLivro({
+      titulo,
+      anoPublicacao: ano,
+      autor
+    });
 
     console.log("\n⋆.˚Livro cadastrado com sucesso!˚.⋆");
     console.log("⋆.˚Identificador:", livro.identificador);
@@ -137,9 +138,11 @@ export class MenuAcervo {
     const plataforma = await this.perguntar("⋆.˚Plataforma: ");
     const ano = await this.perguntarNumero("⋆.˚Ano de publicação: ");
 
-    const jogo = new JogoEletronico(titulo, ano, plataforma);
-
-    this.acervoService.cadastrar(jogo);
+    const jogo = this.acervoService.cadastrarJogo({
+      titulo,
+      anoPublicacao: ano,
+      plataforma
+    });
 
     console.log("\n⋆.˚Jogo cadastrado com sucesso!˚.⋆");
     console.log("⋆.˚Identificador:", jogo.identificador);
@@ -162,6 +165,7 @@ export class MenuAcervo {
       console.log("Ano:", item.ano);
       console.log("Status:", item.statusDisponibilidade);
       console.log("Tipo:", item instanceof Livro ? "Livro" : "Jogo eletrônico");
+
       if (item instanceof Livro) {
         console.log("Reserva:", item.statusReserva);
       }

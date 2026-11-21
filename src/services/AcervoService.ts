@@ -1,7 +1,13 @@
 
 import { ItemAcervo } from "../domain/ItemAcervo";
+import { Livro } from "../domain/Livro";
+import { JogoEletronico } from "../domain/JogoEletronico";
 import { IRepositorio } from "../repositories/IRepositorio";
 import { Reservavel } from "../interfaces/Reservavel";
+import {
+  CriarLivroDTO,
+  CriarJogoEletronicoDTO
+} from "../dtos/CriarItemDTO";
 import {
   ItemNaoEncontradoError,
   ItemNaoReservavelError
@@ -24,8 +30,28 @@ export class AcervoService {
     private readonly repositorio: IRepositorio<ItemAcervo>
   ) {}
 
-  cadastrar(item: ItemAcervo): void {
-    this.repositorio.adicionar(item);
+  cadastrarLivro(dados: CriarLivroDTO): Livro {
+    const livro = new Livro(
+      dados.titulo,
+      dados.anoPublicacao,
+      dados.autor
+    );
+
+    this.repositorio.adicionar(livro);
+
+    return livro;
+  }
+
+  cadastrarJogo(dados: CriarJogoEletronicoDTO): JogoEletronico {
+    const jogo = new JogoEletronico(
+      dados.titulo,
+      dados.anoPublicacao,
+      dados.plataforma
+    );
+
+    this.repositorio.adicionar(jogo);
+
+    return jogo;
   }
 
   listar(): readonly ItemAcervo[] {
