@@ -118,7 +118,7 @@ export class MenuAcervo {
     console.log("\n★☆--- CADASTRAR LIVRO ---☆★");
 
     const titulo = await this.perguntar("⋆.˚Título: ");
-    const autor = await this.perguntar("⋆.˚Autor: ");
+    const autor = await this.perguntar("⋆.˚Autor(a): ");
     const ano = await this.perguntarNumero("⋆.˚Ano de publicação: ");
 
     const livro = this.acervoService.cadastrarLivro({
